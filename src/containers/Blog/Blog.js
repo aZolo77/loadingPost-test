@@ -9,7 +9,8 @@ import './Blog.css';
 class Blog extends Component {
   state = {
     posts: [],
-    selectedPostId: null
+    selectedPostId: null,
+    error: false
   };
 
   componentDidMount() {
@@ -23,7 +24,7 @@ class Blog extends Component {
         this.setState({ posts });
       })
       .catch(err => {
-        console.log(err);
+        this.setState({ error: true });
       });
   }
 
@@ -47,12 +48,20 @@ class Blog extends Component {
   };
 
   render() {
-    const { selectedPostId } = this.state;
+    const { selectedPostId, error } = this.state;
 
     return (
       <div>
         <h1 style={{ textAlign: 'center', marginTop: '30px' }}>All Posts:</h1>
-        <section className="Posts">{this.renderPosts()}</section>
+        <section className="Posts">
+          {error ? (
+            <p style={{ color: 'red', fontWeight: 'bold' }}>
+              Something went wrong!
+            </p>
+          ) : (
+            this.renderPosts()
+          )}
+        </section>
         <section>
           <FullPost id={selectedPostId} />
         </section>
