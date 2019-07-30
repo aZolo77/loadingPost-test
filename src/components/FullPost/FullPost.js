@@ -13,21 +13,17 @@ class FullPost extends Component {
     const { id } = this.props;
     if (id) {
       if (!loadedPost || (loadedPost && loadedPost.id !== id)) {
-        Axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`).then(
-          ({ data }) => {
-            this.setState({ loadedPost: data });
-          }
-        );
+        Axios.get(`/posts/${id}`).then(({ data }) => {
+          this.setState({ loadedPost: data });
+        });
       }
     }
   }
 
   deletePostHandler = id => () => {
-    Axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`).then(
-      res => {
-        console.log(res);
-      }
-    );
+    Axios.delete(`/posts/${id}`).then(res => {
+      console.log(res);
+    });
   };
 
   render() {
