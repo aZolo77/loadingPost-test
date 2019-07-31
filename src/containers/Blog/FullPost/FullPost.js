@@ -8,9 +8,13 @@ class FullPost extends Component {
     loadedPost: null
   };
 
-  componentDidUpdate() {
+  componentDidMount() {
     const { loadedPost } = this.state;
-    const { id } = this.props;
+    const {
+      match: {
+        params: { id }
+      }
+    } = this.props;
     if (id) {
       if (!loadedPost || (loadedPost && loadedPost.id !== id)) {
         Axios.get(`/posts/${id}`).then(({ data }) => {
@@ -28,7 +32,11 @@ class FullPost extends Component {
 
   render() {
     const { loadedPost } = this.state;
-    const { id } = this.props;
+    const {
+      match: {
+        params: { id }
+      }
+    } = this.props;
 
     const textStyle = {
       textAlign: 'center',
@@ -38,7 +46,7 @@ class FullPost extends Component {
       margin: '10px auto'
     };
 
-    let post = <p style={textStyle}>Please select a Post!</p>;
+    let post = null;
 
     if (id) {
       post = <p style={textStyle}>Loading...</p>;
@@ -57,6 +65,7 @@ class FullPost extends Component {
     ) : (
       post
     );
+
     return post;
   }
 }
