@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-// import FullPost from '../FullPost/FullPost';
+import { Route } from 'react-router-dom';
 import Post from '../../../components/Post/Post';
 import axiosInstance from '../../../axios';
-import { Link } from 'react-router-dom';
+import FullPost from '../FullPost/FullPost';
 
 import './Posts.css';
 
@@ -30,30 +30,32 @@ class Posts extends Component {
   }
 
   postSelectedHandler = id => () => {
-    this.setState({
-      selectedPostId: id
-    });
+    // adds new path to the history arr
+    const { history } = this.props;
+    history.push({ pathname: `/posts/${id}` });
   };
 
   renderPosts = () => {
     const { posts } = this.state;
     if (!posts.length) return null;
     return posts.map(({ id, title, author }) => (
-      <Link key={id} to={{ pathname: `/posts/${id}` }}>
-        <Post
-          title={title}
-          author={author}
-          clicked={this.postSelectedHandler(id)}
-        />
-      </Link>
+      <Post
+        key={id}
+        title={title}
+        author={author}
+        clicked={this.postSelectedHandler(id)}
+      />
     ));
   };
 
   render() {
+    const { match } = this.props;
     return (
       <div>
         <h1 style={{ textAlign: 'center', marginTop: '30px' }}>All Posts:</h1>
         <section className="Posts">{this.renderPosts()}</section>
+        {/* Nested Route */}
+        <Route path={`${match.url}/:id`} component={FullPost} exact />
       </div>
     );
   }

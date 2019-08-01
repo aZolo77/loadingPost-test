@@ -11,15 +11,17 @@ class NewPost extends Component {
   };
 
   componentDidMount() {
-    // console.log(this.props);
+    // if the user is not authenticated => this.props.history.replace('/posts');
   }
 
   postDataHandler = () => {
     const { title, content, author } = this.state;
     const post = { title, body: content, author };
+    const { history } = this.props;
     Axios.post('/posts', post)
       .then(res => {
-        console.log(res);
+        // console.log(res);
+        history.replace({ pathname: '/posts' });
       })
       .catch(err => {
         console.log(err);
